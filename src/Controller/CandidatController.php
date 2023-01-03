@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Candidat;
 use App\Entity\Certification;
 use App\Entity\Experience;
+use App\Entity\User;
 use App\Form\CandidatType;
 use App\Form\CertificationType;
 use App\Form\ExperienceType;
