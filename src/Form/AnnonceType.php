@@ -97,11 +97,11 @@ class AnnonceType extends AbstractType
                 'allow_delete' => true,
                 'by_reference' => false
             ])
-            /*            ->add('description', CKEditorType::class, [
-                            'config_name' => 'light',
-                            'config' => ['editorplaceholder' => "Décrivez votre annonce..."]
-                        ])*/
-            ->add('description', TextAreaType::class, [])
+            ->add('description', CKEditorType::class, [
+                'attr' => ['data-ckeditor' => true],
+                'config_name' => 'light',
+                'config' => ['editorplaceholder' => "Décrivez votre annonce..."]
+            ])
             ->add('author', EntityType::class, [
                 'class' => ExternaticConsultant::class,
                 "required" => true,
@@ -113,7 +113,6 @@ class AnnonceType extends AbstractType
                 'label' => 'Publier',
                 'row_attr' => ['class' => 'd-flex justify-content-center']
             ]);
-        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
