@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-php composer.phar update
+composer install
 
 ## Symfony configuration
 if [ ${APP_ENV} != "prod" ]; then
