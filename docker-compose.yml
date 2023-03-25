@@ -2,73 +2,37 @@ version: '3.4'
 
 services:
   web:
+    env_file:
+      - .env
+    environment:
+      # @todo add APP_ENV default dev
+      DATABASE_URL: mysql://${USER_NAME}:${USER_PASSWORD}@${DATABASE_SUBDOMAIN_NAME}-db:3306/${DB_NAME}?serverVersion=8&charset=utf8mb4
+      MAILER_DSN: smtp://${PROJECT_NAME}-mailhog:1025
     build: .
     container_name: ${PROJECT_NAME:-project}-web
     volumes:
-      - ./:/var/www
-#      - /var/www/vendor/
-      - /var/www/public/
-    depends_on:
-      - database
+      - ./public/uploads:/var/www/public/uploads
     restart: always
     networks:
       - proxy
-      - default
-    environment:
-      DATABASE_URL: mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@database:3306/${MYSQL_DATABASE}?serverVersion=8&charset=utf8mb4
-      APP_ENV: ${APP_ENV}
-      APP_SECRET: ${APP_SECRET}
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
       - "traefik.http.routers.${PROJECT_NAME:-project}-secure.entrypoints=websecure"
-      - "traefik.http.routers.${PROJECT_NAME:-project}-secure.rule=Host(`${PROJECT_NAME:-project}.${DOMAIN:-localhost}`)"
+      - "traefik.http.routers.${PROJECT_NAME:-project}-secure.rule=Host(`${PROJECT_NAME:-project}.${HOST:-localhost}`)"
 
-  ###> doctrine/doctrine-bundle ###
-  database:
-    build: ./docker/mysql
-    container_name: ${PROJECT_NAME:-project}-db
-    restart: always
-    volumes:
-      - db-data:/var/lib/mysql
-    environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE:-app}
-      # So you don't have to use root, but you can if you like
-      MYSQL_USER: ${MYSQL_USER:-app}
-      # You can use whatever password you like
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-!ChangeMe!}
-      # Password for root access
-      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD:-!ChangeMe!}
-    #    ports:
-    #      # <Port exposed> : < MySQL Port running inside container>
-    #      - '3306:3306'
-    networks:
-      - default
-    expose:
-      # Opens port 3306 on the container
-      - 3306
-      # Where our data will be persisted
-      #    volumes:
-      #      - my-db:/var/lib/mysql
-      #    volumes:
-      #      - database_data:/etc/mysql/conf.d
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
-  ###< doctrine/doctrine-bundle ###
-
-  ###> symfony/mailer ###
   mailer:
-    image: schickling/mailcatcher
-    container_name: ${PROJECT_NAME:-project}-mailer
-    ports: [ 1025, 1080 ]
-###< symfony/mailer ###
+    image: mailhog/mailhog:latest
+    container_name: ${PROJECT_NAME:-project}-mailhog
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.mailhog-${PROJECT_NAME:-project}-secure.entrypoints=websecure"
+      - "traefik.http.routers.mailhog-${PROJECT_NAME:-project}-secure.rule=Host(`mailhog.${PROJECT_NAME:-project}.${HOST:-localhost}`)"
+      - "traefik.http.services.mailhog-${PROJECT_NAME:-project}.loadbalancer.server.port=8025"
 
 networks:
   proxy:
     external: true
-
-volumes:
-  ###> doctrine/doctrine-bundle ###
-  db-data:
-      name: ${PROJECT_NAME:-project}-db
-###< doctrine/doctrine-bundle ###

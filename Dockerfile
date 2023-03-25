@@ -7,7 +7,7 @@ WORKDIR /app
 
 COPY composer.json composer.json
 COPY composer.lock composer.lock
-RUN composer install --ignore-platform-reqs --no-interaction --no-plugins --no-scripts --prefer-dist
+RUN composer install --no-scripts
 
 #
 # Prep App's Frontend CSS & JS now
@@ -20,7 +20,8 @@ COPY package.json package.json
 COPY yarn.lock yarn.lock
 COPY . .
 RUN yarn install
-RUN yarn run build
+RUN yarn build
+#RUN ls public
 
 FROM php:8.2-fpm-alpine as phpserver
 
@@ -53,6 +54,7 @@ WORKDIR /var/www
 COPY . /var/www/
 COPY --from=vendor /app/vendor /var/www/vendor
 COPY --from=composer /composer /usr/bin/composer
+COPY --from=node /app/public/build /var/www/public/build
 
 EXPOSE 80
 
