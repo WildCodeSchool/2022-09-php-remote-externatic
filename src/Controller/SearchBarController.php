@@ -29,7 +29,6 @@ class SearchBarController extends AbstractController
         }
         ksort($contractTypeFromDb);
 
-
         //Creating search engine
         $form = $this->createFormBuilder($searchData)
             ->add('searchQuery', TextType::class, [
@@ -38,7 +37,6 @@ class SearchBarController extends AbstractController
                     ],
                 'required' => false,
             ])
-
             ->add('remote', ChoiceType::class, [
                 'choices'  => [
                     'Total/partiel' => true,
@@ -46,7 +44,6 @@ class SearchBarController extends AbstractController
                 ],
                 "required" => false,
             ])
-
             ->add('workTime', ChoiceType::class, [
                 'choices'  => [
                     'Plein temps' => true,
@@ -54,7 +51,6 @@ class SearchBarController extends AbstractController
                 ],
                 "required" => false,
             ])
-
             ->add('period', ChoiceType::class, [
                 'choices'  => [
                     '1 jour' => 1,
@@ -63,7 +59,6 @@ class SearchBarController extends AbstractController
                 ],
                 "required" => false,
             ])
-
             ->add('company', EntityType::class, [
                 'class' => Company::class,
                 'query_builder' => function (EntityRepository $er) {
@@ -73,12 +68,10 @@ class SearchBarController extends AbstractController
                 'choice_label' => 'name',
                 "required" => false,
             ])
-
             ->add('salaryMin', MoneyType::class, [
                 'grouping' => false,
                 "required" => false,
             ])
-
             ->add('contractType', ChoiceType::class, [
                 'choices' => $contractTypeFromDb,
                 "required" => false,
@@ -86,7 +79,6 @@ class SearchBarController extends AbstractController
                 'multiple' => true,
                 'attr' => ['class' => '']
             ])
-
             ->add('techno', EntityType::class, [
                 'class' => Techno::class,
                 'query_builder' => function (EntityRepository $er) {
@@ -98,9 +90,7 @@ class SearchBarController extends AbstractController
                 'choice_label' => 'name',
             ])
             ->setMethod('GET')
-
             ->setAction($this->generateUrl('annonce_search_results'))
-
             ->getForm();
 
         return $this->renderForm('_include/_searchBar.html.twig', [

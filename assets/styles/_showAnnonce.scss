@@ -5,6 +5,11 @@
     }
 }
 .show_annonce{
+    img.logo {
+        object-fit: contain;
+
+    }
+
     h1{
         text-align: center;
     }

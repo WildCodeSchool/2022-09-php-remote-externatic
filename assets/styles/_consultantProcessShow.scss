@@ -43,7 +43,6 @@
                 select {
                     height: 2.5rem;
                 }
-
             }
         }
     }
@@ -56,6 +55,14 @@
             height:2.5rem;
         }
     }
+
+    #companyLogo img {
+        height: 100%;
+        max-width: 100%;
+        object-fit: contain;
+    }
+
+
 
 
     .contactCard, .descriptionCandidat, .tech {

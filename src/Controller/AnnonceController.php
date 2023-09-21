@@ -10,7 +10,9 @@ use App\Entity\RecruitmentProcess;
 use App\Form\AnnonceType;
 use App\Form\MessageType;
 use App\Repository\AnnonceRepository;
+use App\Repository\CompanyRepository;
 use App\Repository\NotifRepository;
+use App\Repository\TechnoRepository;
 use App\Repository\UserRepository;
 use App\Repository\CandidatRepository;
 use App\Repository\MessageRepository;
@@ -33,6 +35,8 @@ class AnnonceController extends AbstractController
     public function index(
         Request $request,
         AnnonceRepository $annonceRepository,
+        CompanyRepository $companyRepository,
+        TechnoRepository $technoRepository,
         PaginatorInterface $paginator
     ): Response {
         $queryAnnonces = $annonceRepository->annonceFinder($request->get('form'));
@@ -40,10 +44,10 @@ class AnnonceController extends AbstractController
         $searchData = $request->get('form');
 
         if (isset($searchData["company"])) {
-            unset($searchData["company"]);
+            $searchData["company"] = $companyRepository->findOneBy(['id' => $searchData["company"]]);
         }
         if (isset($searchData["techno"])) {
-            unset($searchData["techno"]);
+            $searchData["techno"] = $technoRepository->findBy(['id' => $searchData["techno"]]);
         }
         if (isset($searchData["salaryMin"])) {
             $searchData["salaryMin"] = intVal($searchData["salaryMin"]);
@@ -74,6 +78,7 @@ class AnnonceController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $date = new DateTime();
             $annonce->setCreatedAt($date);
+            $annonce->setPublicationStatus(1);
 
             /**
              * @var ?User $user

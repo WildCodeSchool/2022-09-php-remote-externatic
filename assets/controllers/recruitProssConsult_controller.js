@@ -10,7 +10,6 @@ export default class extends Controller {
     searchAddress(event) {
         let search = event.target.value;
         if (event.target.value.length >= 5) {
-            console.log(`https://api-adresse.data.gouv.fr/search/?q=${search}&limit=5`)
             fetch(`https://api-adresse.data.gouv.fr/search/?q=${search}&limit=5`)
                 .then(response => response.json())
                 .then(adresses => {

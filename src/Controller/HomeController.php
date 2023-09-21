@@ -23,7 +23,7 @@ class HomeController extends AbstractController
     ): Response {
         $form = $this->createFormBuilder()
             ->add('searchQuery', TextType::class, [
-                'label' => "Recherchez l'offre qui vont correspond !",
+                'label' => "Recherchez l'offre qui vous correspond !",
                 'required' => false
                 ])
             ->setAction($this->generateUrl('annonce_search_results'))

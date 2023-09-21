@@ -37,15 +37,21 @@ class MessageController extends AbstractController
 
         $form = $this->createForm(AdminSearchType::class);
         $form->handleRequest($request);
-        $messageQuery = $messageRepository->getInbox($user);
+
+        $searchParameter = "";
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $searchParameter = $data['search'] ?? "";
+        }
+
+        $messages = $messageRepository->getInbox($user, $searchParameter);
         $receivedMessages = $paginator->paginate(
-            $messageQuery,
+            $messages,
             $request->query->getInt('page', 1),
             10
         );
 
         return $this->renderForm('message/conversationlist.html.twig', [
-            'controller_name' => 'MessageController',
             'receivedMessages' => $receivedMessages,
             'form' => $form,
         ]);
