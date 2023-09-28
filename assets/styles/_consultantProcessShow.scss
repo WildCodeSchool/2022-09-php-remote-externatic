@@ -55,16 +55,12 @@
             height:2.5rem;
         }
     }
-
+  
     #companyLogo img {
         height: 100%;
         max-width: 100%;
         object-fit: contain;
     }
-
-
-
-
     .contactCard, .descriptionCandidat, .tech {
         margin: $spacer;
         border-radius: 24px;
@@ -178,6 +174,14 @@
             grid-gap: $spacer;
             width: 100%;
 
+            div#annonceOrCompanyDescription
+            {
+                max-height: 12rem;
+                overflow-y: scroll;
+                @include scrollBar;
+
+            }
+
             p.description {
                 max-height: 6rem;
                 overflow-y: scroll;
@@ -186,8 +190,9 @@
             }
 
             img {
-                height: 80%;
-                margin: 0 auto;
+                max-height: 80%;
+                max-width: 100%;
+                margin: auto;
             }
 
         }

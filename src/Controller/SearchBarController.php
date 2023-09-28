@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Company;
 use App\Entity\Techno;
+use App\Form\AnnonceType;
 use App\Repository\AnnonceRepository;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -17,15 +18,9 @@ class SearchBarController extends AbstractController
 {
     public function searchBar(AnnonceRepository $annonceRepository, mixed $searchData): Response
     {
-        //fetching contact types from Bdd
-        $contractTypeQuery = $annonceRepository->createQueryBuilder("a")
-            ->select("distinct (a.contractType)")
-            ->getQuery()
-            ->getResult();
-
         $contractTypeFromDb = [];
-        foreach ($contractTypeQuery as $contractType) {
-            $contractTypeFromDb[ucfirst($contractType[1])] = $contractType[1];
+        foreach (AnnonceType::CONTRACT_TYPE as $contractType) {
+            $contractTypeFromDb[ucfirst($contractType)] = $contractType;
         }
         ksort($contractTypeFromDb);
 
@@ -34,25 +29,25 @@ class SearchBarController extends AbstractController
             ->add('searchQuery', TextType::class, [
                 'attr' => [
                     'placeholder' => 'votre recherche'
-                    ],
+                ],
                 'required' => false,
             ])
             ->add('remote', ChoiceType::class, [
-                'choices'  => [
+                'choices' => [
                     'Total/partiel' => true,
                     'Présentiel' => false,
                 ],
                 "required" => false,
             ])
             ->add('workTime', ChoiceType::class, [
-                'choices'  => [
+                'choices' => [
                     'Plein temps' => true,
                     'Temps partiel' => false,
                 ],
                 "required" => false,
             ])
             ->add('period', ChoiceType::class, [
-                'choices'  => [
+                'choices' => [
                     '1 jour' => 1,
                     '5 jours' => 5,
                     '2 semaines' => 15,
