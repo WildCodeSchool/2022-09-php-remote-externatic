@@ -43,7 +43,7 @@ class MessageRepository extends ServiceEntityRepository
         }
     }
 
-    public function getInbox(User $user): array
+    public function getInbox(User $user, string $searchParameter = ""): array
     {
         $mappingBuilder = new ResultSetMappingBuilder($this->getEntityManager());
         $mappingBuilder->addRootEntityFromClassMetadata('App\Entity\Message', 'm');
@@ -58,10 +58,11 @@ class MessageRepository extends ServiceEntityRepository
                 on md.recruitment_process_id = m.recruitment_process_id
                         and m.date = md.maxDate and m.id = md.maxId
                 where m.recruitment_process_id is not null
-                and m.send_to_id = ? or send_by_id = ?
+                and (m.send_to_id = ? or send_by_id = ?)
+                and (m.content like ?)
                 order by m.date DESC';
         $query = $this->getEntityManager()->createNativeQuery($querySql, $mappingBuilder);
-        $query->setParameters([1 => $user, 2 => $user]);
+        $query->setParameters([1 => $user, 2 => $user, 3 => "%$searchParameter%" ]);
         return $query->getResult();
     }
 
