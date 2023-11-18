@@ -92,6 +92,7 @@ class CompanyType extends AbstractType
                 },
                 'multiple' => false,
                 'expanded' => false,
+                'by_reference' => false,
             ])
         ;
     }

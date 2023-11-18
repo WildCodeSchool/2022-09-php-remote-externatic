@@ -24,7 +24,6 @@ class SearchBarController extends AbstractController
         }
         ksort($contractTypeFromDb);
 
-
         //Creating search engine
         $form = $this->createFormBuilder($searchData)
             ->add('searchQuery', TextType::class, [

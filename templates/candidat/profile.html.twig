@@ -40,9 +40,11 @@
                 </div>
             </div>
         </div>
+        {%  if app.user == user %}
         <div class="d-flex justify-content-center mt-5">
             <a href="{{ path('app_candidat_ask_delete') }}">Supprimer mon profil</a>
         </div>
+        {% endif %}
     </main>
 
 
