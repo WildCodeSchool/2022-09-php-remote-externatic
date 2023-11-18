@@ -683,6 +683,9 @@
     "symfony/ux-twig-component": {
         "version": "v2.6.1"
     },
+    "symfony/ux-typed": {
+        "version": "v2.13.2"
+    },
     "symfony/validator": {
         "version": "6.0",
         "recipe": {
