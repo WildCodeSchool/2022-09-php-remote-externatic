@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a559ddc4940016b338dd7f40b9841c30",
+    "content-hash": "1d57295cc55a16a04ad0ee9d59379791",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -7436,16 +7436,16 @@
         },
         {
             "name": "symfony/ux-live-component",
-            "version": "v2.6.1",
+            "version": "v2.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-live-component.git",
-                "reference": "31031c3b6e92f496524c496c2e04878d3827d802"
+                "reference": "79066fbf5e3e178bddc8cf2a847ce427f6bd9327"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-live-component/zipball/31031c3b6e92f496524c496c2e04878d3827d802",
-                "reference": "31031c3b6e92f496524c496c2e04878d3827d802",
+                "url": "https://api.github.com/repos/symfony/ux-live-component/zipball/79066fbf5e3e178bddc8cf2a847ce427f6bd9327",
+                "reference": "79066fbf5e3e178bddc8cf2a847ce427f6bd9327",
                 "shasum": ""
             },
             "require": {
@@ -7501,7 +7501,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-live-component/tree/v2.6.1"
+                "source": "https://github.com/symfony/ux-live-component/tree/v2.7.1"
             },
             "funding": [
                 {
@@ -7517,7 +7517,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-11-28T17:55:37+00:00"
+            "time": "2023-01-24T15:57:44+00:00"
         },
         {
             "name": "symfony/ux-swup",
