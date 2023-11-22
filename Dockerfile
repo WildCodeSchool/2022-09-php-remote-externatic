@@ -1,22 +1,29 @@
 #
 # Prep App's PHP Dependencies
 #
-FROM composer:2.1 as vendor
-
+FROM composer/composer:2-bin as composer
+FROM composer:2.5.1 as vendor
 WORKDIR /app
 
 COPY composer.json composer.json
-COPY composer.lock composer.lock
+#COPY composer.lock composer.lock
+RUN composer install --no-scripts
 
-RUN composer install \
-    --ignore-platform-reqs \
-    --no-interaction \
-    --no-plugins \
-    --no-scripts \
-    --prefer-dist \
-    --quiet
+#
+# Prep App's Frontend CSS & JS now
+# so some symfony UX dependencies can access to vendor
+#
+FROM node:18-alpine as node
+WORKDIR /app
+COPY --from=vendor /app/vendor vendor/
+COPY package.json package.json
+COPY yarn.lock yarn.lock
+COPY . .
+RUN yarn install
+RUN yarn build
+#RUN ls public
 
-FROM php:8.1-fpm-alpine as phpserver
+FROM php:8.2-fpm-alpine as phpserver
 
 # add cli tools
 RUN apk update \
@@ -24,8 +31,19 @@ RUN apk update \
     && apk add nginx
 
 RUN apk add --no-cache \
-      libzip-dev \
-      zip \
+    libzip-dev \
+    zip \
+    freetype \
+    libpng \
+    libjpeg-turbo \
+    freetype-dev \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    && docker-php-ext-configure gd \
+    --with-freetype --with-jpeg \
+    && NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) \
+    && docker-php-ext-install -j${NPROC} gd \
+    && apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev \
     && docker-php-ext-install zip
 
 # silently install 'docker-php-ext-install' extensions
@@ -42,24 +60,12 @@ COPY nginx.conf /etc/nginx/nginx.conf
 COPY php.ini /usr/local/etc/php/conf.d/local.ini
 RUN cat /usr/local/etc/php/conf.d/local.ini
 
-WORKDIR /var/www
 
+WORKDIR /var/www
 COPY . /var/www/
 COPY --from=vendor /app/vendor /var/www/vendor
-
-#
-# Prep App's Frontend CSS & JS now
-# so some symfony UX dependencies can access to vendor
-#
-RUN apk add nodejs
-RUN apk add npm
-RUN npm install npm@latest -g
-RUN npm install yarn@latest -g
-RUN npx browserslist@latest --update-db
-RUN node -v
-RUN npm -v
-RUN yarn install
-RUN yarn run build
+COPY --from=composer /composer /usr/bin/composer
+COPY --from=node /app/public/build /var/www/public/build
 
 EXPOSE 80
 

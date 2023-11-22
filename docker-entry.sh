@@ -1,7 +1,7 @@
 #!/bin/sh
+mkdir -p /var/www/public/uploads
+chmod -R 777 /var/www/public/uploads
 set -e
-
-php composer.phar update
 
 ## Symfony configuration
 if [ ${APP_ENV} != "prod" ]; then
@@ -18,6 +18,11 @@ php bin/console cache:warmup
 
 chmod -R 777 /var/www/var
 chmod -R 777 /var/www/public
+
+# run composer scripts like
+# assets:install public
+# ckeditor:install and so on
+composer run post-install-cmd
 
 ## server config
 php-fpm -D &
