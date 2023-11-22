@@ -1407,6 +1407,9 @@
 "@symfony/ux-turbo@file:vendor/symfony/ux-turbo/assets":
   version "0.1.0"
 
+"@symfony/ux-typed@file:vendor/symfony/ux-typed/assets":
+  version "1.0.0"
+
 "@symfony/webpack-encore@^4.0.0":
   version "4.1.1"
   resolved "https://registry.npmjs.org/@symfony/webpack-encore/-/webpack-encore-4.1.1.tgz"
@@ -4852,6 +4855,11 @@ typed-query-selector@^2.6.1:
   version "2.8.0"
   resolved "https://registry.yarnpkg.com/typed-query-selector/-/typed-query-selector-2.8.0.tgz#4983ec340a71098a4ebaa6dfc56778331755871d"
   integrity sha512-jo9NLGQ0b7sT9TK3mxzemATQqTb/uh8TRvcOK6WSwKNewALt3AA8q2m7cdpF/uUbd/cdixaBxCGe6fpzpEWbGw==
+
+typed.js@^2.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/typed.js/-/typed.js-2.1.0.tgz#b97a06111a5f57d6a59acfdd36d4f9b891ee13b4"
+  integrity sha512-bDuXEf7YcaKN4g08NMTUM6G90XU25CK3bh6U0THC/Mod/QPKlEt9g/EjvbYB8x2Qwr2p6J6I3NrsoYaVnY6wsQ==
 
 unicode-canonical-property-names-ecmascript@^2.0.0:
   version "2.0.0"
